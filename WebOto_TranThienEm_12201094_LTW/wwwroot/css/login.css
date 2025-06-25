@@ -1,0 +1,101 @@
+﻿/* Thiết lập tổng thể cho trang login */
+body {
+    background: linear-gradient(to right, #8e44ad, #3498db);
+    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+/* Dùng flexbox để căn giữa form login */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 200px); /* trừ phần header/footer */
+    padding: 30px 15px;
+}
+
+/* Form login */
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    background-color: #fff;
+    padding: 40px 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Tiêu đề form */
+.login-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 600;
+    color: #7e57c2;
+    margin-bottom: 24px;
+}
+
+/* Label form */
+.form-group label,
+.form-check-label {
+    font-weight: 500;
+}
+
+/* Nút đăng nhập */
+.btn-login {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(to right, #7e57c2, #5c6bc0);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+    .btn-login:hover {
+        background: linear-gradient(to right, #5c6bc0, #7e57c2);
+    }
+
+/* Các liên kết phụ: Quên mật khẩu, đăng ký */
+.auth-links {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    margin-top: 16px;
+}
+
+    .auth-links a {
+        color: #7e57c2;
+        text-decoration: none;
+    }
+
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+
+/* Đường gạch giữa nút và liên kết phụ */
+.divider {
+    text-align: center;
+    margin: 16px 0;
+    position: relative;
+}
+
+    .divider span {
+        background-color: #fff;
+        padding: 0 10px;
+        position: relative;
+        z-index: 1;
+        color: #999;
+    }
+
+    .divider::before {
+        content: "";
+        height: 1px;
+        background-color: #ccc;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        z-index: 0;
+    }

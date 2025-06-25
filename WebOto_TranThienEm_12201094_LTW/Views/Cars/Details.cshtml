@@ -1,0 +1,71 @@
+﻿@model WebOto_TranThienEm_12201094_LTW.Models.ViewModels.CarDetailsViewModel
+
+@{
+    ViewData["Title"] = "Chi tiết xe " + Model.Car.Name;
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <img src="@Model.Car.ImageUrl" class="card-img-top" alt="@Model.Car.Name" style="max-height: 400px; object-fit: cover;">
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title fw-bold text-primary">@Model.Car.Name</h3>
+                    <h5 class="text-danger mb-3">@Model.Car.FormattedPrice VNĐ</h5>
+
+                    <table class="table table-bordered table-striped">
+                        <tbody>
+                            <tr><th>Hãng</th><td>@Model.Car.BrandName</td></tr>
+                            <tr><th>Loại xe</th><td>@Model.Car.CategoryName</td></tr>
+                            <tr><th>Năm sản xuất</th><td>@Model.Car.Year</td></tr>
+                            <tr><th>Màu sắc</th><td>@Model.Car.Color</td></tr>
+                            <tr><th>Số km đã đi</th><td>@Model.Car.FormattedMileage</td></tr>
+                            <tr><th>Nhiên liệu</th><td>@Model.Car.FuelType</td></tr>
+                            <tr><th>Hộp số</th><td>@Model.Car.Transmission</td></tr>
+                            <tr><th>Địa điểm</th><td>@Model.Car.Location</td></tr>
+                            <tr><th>SĐT liên hệ</th><td>@Model.Car.ContactPhone</td></tr>
+                        </tbody>
+                    </table>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Car.Description))
+                    {
+                        <div class="mt-3">
+                            <h6 class="fw-bold">Mô tả:</h6>
+                            <p>@Model.Car.Description</p>
+                        </div>
+                    }
+
+                    <a asp-controller="Order" asp-action="Create" asp-route-id="@Model.Car.Id" class="btn btn-success mt-3 w-100">
+                        <i class="bi bi-basket"></i> Đặt hàng xe này
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (Model.RelatedCars?.Any() == true)
+    {
+        <hr />
+        <h4 class="mt-4 mb-3">Xe liên quan</h4>
+        <div class="row">
+            @foreach (var car in Model.RelatedCars)
+            {
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 shadow-sm">
+                        <img src="@car.ImageUrl" class="card-img-top" style="height: 200px; object-fit: cover;" />
+                        <div class="card-body">
+                            <h5 class="card-title">@car.Name</h5>
+                            <p class="card-text text-danger">@car.Price.ToString("N0") VNĐ</p>
+                            <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id" class="btn btn-outline-primary w-100">
+                                Xem chi tiết
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

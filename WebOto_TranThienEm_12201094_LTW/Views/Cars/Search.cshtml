@@ -1,0 +1,238 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model WebOto_TranThienEm_12201094_LTW.Models.ViewModels.SearchViewModel
+
+@{
+    ViewData["Title"] = "Tìm kiếm xe hơi";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Tìm kiếm & Lọc Xe</h2>
+
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            Bộ lọc tìm kiếm
+            <button class="btn btn-sm btn-light float-end" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="true" aria-controls="filterCollapse">
+                <i class="fas fa-chevron-down"></i>
+            </button>
+        </div>
+        <div class="card-body collapse show" id="filterCollapse">
+            <form asp-controller="Cars" asp-action="Index" method="get" id="searchForm">
+                <div class="row g-3">
+                    <div class="col-md-6 col-lg-4">
+                        <label for="Keyword" class="form-label">Từ khóa:</label>
+                        <input type="text" class="form-control" id="Keyword" name="Keyword" value="@Model.Keyword" placeholder="Tên xe, hãng xe, mô tả...">
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <label for="BrandId" class="form-label">Hãng xe:</label>
+                        <select class="form-select" id="BrandId" name="BrandId">
+                            <option value="">-- Chọn hãng xe --</option>
+                            @foreach (var brand in Model.Brands)
+                            {
+                                <option value="@brand.Id" selected="@(Model.BrandId == brand.Id)">@brand.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <label for="CategoryId" class="form-label">Loại xe:</label>
+                        <select class="form-select" id="CategoryId" name="CategoryId">
+                            <option value="">-- Chọn loại xe --</option>
+                            @foreach (var category in Model.Categories)
+                            {
+                                <option value="@category.Id" selected="@(Model.CategoryId == category.Id)">@category.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <label for="YearFrom" class="form-label">Năm từ:</label>
+                        <input type="number" class="form-control" id="YearFrom" name="YearFrom" value="@Model.YearFrom" min="1900" max="@DateTime.Now.Year">
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <label for="YearTo" class="form-label">Năm đến:</label>
+                        <input type="number" class="form-control" id="YearTo" name="YearTo" value="@Model.YearTo" min="1900" max="@DateTime.Now.Year">
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <label for="PriceFrom" class="form-label">Giá từ (triệu):</label>
+                        <input type="number" step="0.01" class="form-control" id="PriceFrom" name="PriceFrom" value="@(Model.PriceFrom.HasValue ? Model.PriceFrom.Value.ToString("F0") : "")">
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <label for="PriceTo" class="form-label">Giá đến (triệu):</label>
+                        <input type="number" step="0.01" class="form-control" id="PriceTo" name="PriceTo" value="@(Model.PriceTo.HasValue ? Model.PriceTo.Value.ToString("F0") : "")">
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <label for="FuelType" class="form-label">Loại nhiên liệu:</label>
+                        <select class="form-select" id="FuelType" name="FuelType">
+                            <option value="">-- Chọn nhiên liệu --</option>
+                            <option value="Xăng" selected="@(Model.FuelType == "Xăng")">Xăng</option>
+                            <option value="Dầu" selected="@(Model.FuelType == "Dầu")">Dầu</option>
+                            <option value="Điện" selected="@(Model.FuelType == "Điện")">Điện</option>
+                            <option value="Hybrid" selected="@(Model.FuelType == "Hybrid")">Hybrid</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <label for="Transmission" class="form-label">Hộp số:</label>
+                        <select class="form-select" id="Transmission" name="Transmission">
+                            <option value="">-- Chọn hộp số --</option>
+                            <option value="Tự động" selected="@(Model.Transmission == "Tự động")">Tự động</option>
+                            <option value="Số sàn" selected="@(Model.Transmission == "Số sàn")">Số sàn</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 col-lg-4">
+                        <label for="Location" class="form-label">Địa điểm:</label>
+                        <input type="text" class="form-control" id="Location" name="Location" value="@Model.Location" placeholder="Tỉnh/Thành phố">
+                    </div>
+                </div>
+                <div class="mt-4 text-center">
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-search me-2"></i>Tìm kiếm</button>
+                    <a asp-action="Index" class="btn btn-secondary ms-2"><i class="fas fa-redo me-2"></i>Xóa bộ lọc</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <hr />
+
+    <h3 class="mb-3">Kết quả tìm kiếm (@Model.TotalCars xe)</h3>
+
+    @if (!string.IsNullOrEmpty(TempData["Error"] as string))
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["Error"]
+        </div>
+    }
+
+    @if (Model.Cars == null || !Model.Cars.Any())
+    {
+        <div class="alert alert-info text-center" role="alert">
+            Không tìm thấy xe nào phù hợp với tiêu chí tìm kiếm của bạn.
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="carSearchResults">
+            @foreach (var car in Model.Cars)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <img src="@car.ImageUrl" class="card-img-top img-fluid" alt="@car.Name" style="height: 200px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title text-primary">@car.Name</h5>
+                            <p class="card-text mb-1"><strong>Hãng:</strong> @car.BrandName</p>
+                            <p class="card-text mb-1"><strong>Loại:</strong> @car.CategoryName</p>
+                            <p class="card-text mb-1"><strong>Năm:</strong> @car.Year</p>
+                            <p class="card-text mb-1"><strong>Giá:</strong> <span class="text-danger fw-bold">@car.FormattedPrice</span></p>
+                            <div class="mt-auto d-flex justify-content-between align-items-center">
+                                <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id" class="btn btn-info btn-sm">Xem chi tiết</a>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input compare-checkbox" type="checkbox" id="compare_@car.Id" value="@car.Id">
+                                    <label class="form-check-label" for="compare_@car.Id">So sánh</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-pageNumber="@(Model.PageNumber - 1)"
+                       asp-route-keyword="@Model.Keyword"
+                       asp-route-brandId="@Model.BrandId"
+                       asp-route-categoryId="@Model.CategoryId"
+                       asp-route-yearFrom="@Model.YearFrom"
+                       asp-route-yearTo="@Model.YearTo"
+                       asp-route-priceFrom="@Model.PriceFrom"
+                       asp-route-priceTo="@Model.PriceTo"
+                       asp-route-fuelType="@Model.FuelType"
+                       asp-route-transmission="@Model.Transmission"
+                       asp-route-location="@Model.Location">Trước</a>
+                </li>
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                        <a class="page-link" asp-action="Index"
+                           asp-route-pageNumber="@i"
+                           asp-route-keyword="@Model.Keyword"
+                           asp-route-brandId="@Model.BrandId"
+                           asp-route-categoryId="@Model.CategoryId"
+                           asp-route-yearFrom="@Model.YearFrom"
+                           asp-route-yearTo="@Model.YearTo"
+                           asp-route-priceFrom="@Model.PriceFrom"
+                           asp-route-priceTo="@Model.PriceTo"
+                           asp-route-fuelType="@Model.FuelType"
+                           asp-route-transmission="@Model.Transmission"
+                           asp-route-location="@Model.Location">@i</a>
+                    </li>
+                }
+                <li class="page-item @(Model.PageNumber == Model.TotalPages ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-pageNumber="@(Model.PageNumber + 1)"
+                       asp-route-keyword="@Model.Keyword"
+                       asp-route-brandId="@Model.BrandId"
+                       asp-route-categoryId="@Model.CategoryId"
+                       asp-route-yearFrom="@Model.YearFrom"
+                       asp-route-yearTo="@Model.YearTo"
+                       asp-route-priceFrom="@Model.PriceFrom"
+                       asp-route-priceTo="@Model.PriceTo"
+                       asp-route-fuelType="@Model.FuelType"
+                       asp-route-transmission="@Model.Transmission"
+                       asp-route-location="@Model.Location">Sau</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="text-center mt-3">
+            <button id="compareSelectedCarsBtn" class="btn btn-warning" disabled>So sánh các xe đã chọn</button>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#searchForm input, #searchForm select').on('change', function () {
+            });
+
+            let selectedCarIds = [];
+
+            $('.compare-checkbox').on('change', function() {
+                const carId = $(this).val();
+                if ($(this).is(':checked')) {
+                    if (selectedCarIds.length < 3) {
+                        selectedCarIds.push(carId);
+                    } else {
+                        $(this).prop('checked', false);
+                        alert('Bạn chỉ có thể so sánh tối đa 3 xe.');
+                    }
+                } else {
+                    selectedCarIds = selectedCarIds.filter(id => id !== carId);
+                }
+                updateCompareButton();
+            });
+
+            function updateCompareButton() {
+                if (selectedCarIds.length >= 2) {
+                    $('#compareSelectedCarsBtn').prop('disabled', false);
+                } else {
+                    $('#compareSelectedCarsBtn').prop('disabled', true);
+                }
+            }
+
+            $('#compareSelectedCarsBtn').on('click', function() {
+                if (selectedCarIds.length >= 2) {
+                    const idsParam = selectedCarIds.join(',');
+                    window.location.href = `/Cars/Compare?carIds=${idsParam}`;
+                } else {
+                    alert('Vui lòng chọn ít nhất 2 xe để so sánh.');
+                }
+            });
+
+        });
+    </script>
+}

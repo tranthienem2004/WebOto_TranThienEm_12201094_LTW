@@ -1,0 +1,151 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<WebOto_TranThienEm_12201094_LTW.Models.Order>
+@{
+    ViewData["Title"] = "Thông tin đơn hàng";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="text-primary">
+                    <i class="fas fa-clipboard-list"></i> Thông tin đơn hàng
+                </h2>
+
+                <form asp-action="Search" method="get" class="d-flex">
+                    <input type="text" name="searchTerm" class="form-control me-2"
+                           placeholder="Tìm theo email, SĐT, tên..."
+                           value="@ViewBag.SearchTerm" style="width: 300px;">
+                    <button type="submit" class="btn btn-outline-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
+
+            @if (ViewBag.SearchTerm != null)
+            {
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    Kết quả tìm kiếm cho: "<strong>@ViewBag.SearchTerm</strong>"
+                    <a href="@Url.Action("Index")" class="btn btn-sm btn-outline-secondary ms-2">Xem tất cả</a>
+                </div>
+            }
+
+            @if (Model.Any())
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Mã đơn</th>
+                                        <th>Xe đặt mua</th>
+                                        <th>Khách hàng</th>
+                                        <th>Liên hệ</th>
+                                        <th>Ngày đặt</th>
+                                        <th>Trạng thái</th>
+                                        <th>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var order in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <strong class="text-primary">#@order.Id.ToString("D6")</strong>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="@order.Car.ImageUrl" alt="@order.Car.Name"
+                                                         class="img-thumbnail me-2" style="width: 50px; height: 50px; object-fit: cover;">
+                                                    <div>
+                                                        <strong>@order.Car.Name</strong><br>
+                                                        <small class="text-muted">@order.Car.Brand?.Name</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <strong>@order.FullName</strong>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <i class="fas fa-phone text-success"></i> @order.Phone<br>
+                                                    <i class="fas fa-envelope text-info"></i> @order.Email
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-secondary">
+                                                    @order.OrderDate.ToString("dd/MM/yyyy HH:mm")
+                                                </span>
+                                            </td>
+                                            <td>
+                                                @switch (order.Status)
+                                                {
+                                                    case WebOto_TranThienEm_12201094_LTW.Models.OrderStatus.Pending:
+                                                        <span class="badge bg-warning">Đang chờ xử lý</span>
+                                                        break;
+                                                    case WebOto_TranThienEm_12201094_LTW.Models.OrderStatus.Confirmed:
+                                                        <span class="badge bg-info">Đã xác nhận</span>
+                                                        break;
+                                                    case WebOto_TranThienEm_12201094_LTW.Models.OrderStatus.Processing:
+                                                        <span class="badge bg-primary">Đang xử lý</span>
+                                                        break;
+                                                    case WebOto_TranThienEm_12201094_LTW.Models.OrderStatus.Completed:
+                                                        <span class="badge bg-success">Hoàn thành</span>
+                                                        break;
+                                                    case WebOto_TranThienEm_12201094_LTW.Models.OrderStatus.Cancelled:
+                                                        <span class="badge bg-danger">Đã hủy</span>
+                                                        break;
+                                                }
+                                            </td>
+                                            <td>
+                                                <a href="@Url.Action("Details", new { id = order.Id })"
+                                                   class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-eye"></i> Chi tiết
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">
+                        @if (ViewBag.SearchTerm != null)
+                        {
+                            <span>Không tìm thấy đơn hàng nào</span>
+                        }
+                        else
+                        {
+                            <span>Chưa có đơn hàng nào</span>
+                        }
+                    </h4>
+                    <p class="text-muted">
+                        @if (ViewBag.SearchTerm != null)
+                        {
+                            <span>Thử tìm kiếm với từ khóa khác</span>
+                        }
+                        else
+                        {
+                            <span>Hãy bắt đầu đặt mua xe yêu thích của bạn</span>
+                        }
+                    </p>
+                    <a href="@Url.Action("Index", "Car")" class="btn btn-primary">
+                        <i class="fas fa-car"></i> Xem danh sách xe
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

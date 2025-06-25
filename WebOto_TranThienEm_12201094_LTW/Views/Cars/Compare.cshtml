@@ -1,0 +1,70 @@
+﻿@model List<WebOto_TranThienEm_12201094_LTW.Models.ViewModels.CarViewModel>
+
+@{
+    ViewData["Title"] = "So sánh xe";
+    var maxPrice = Model.Max(c => c.Price);
+    var newestYear = Model.Max(c => c.Year);
+    var minMileage = Model.Min(c => c.Mileage);
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">So sánh xe</h2>
+
+    <a asp-controller="Cars" asp-action="Index" class="btn btn-secondary mb-4">
+        <i class="bi bi-arrow-left"></i> Trở về trang sản phẩm
+    </a>
+
+    <div class="row">
+        @foreach (var car in Model)
+        {
+            <div class="col-md-@(12 / Model.Count)">
+                <div class="card mb-4 shadow border-primary">
+                    <img src="@car.ImageUrl" class="card-img-top img-fluid" style="height: 200px; object-fit: cover;" alt="@car.Name" />
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">@car.Name</h5>
+                        <p class="mb-1"><strong>Hãng:</strong> @car.BrandName</p>
+                        <p class="mb-1"><strong>Loại:</strong> @car.CategoryName</p>
+
+                        <p class="mb-1">
+                            <strong>Năm:</strong>
+                            <span class="@(car.Year == newestYear ? "text-success fw-bold" : "")">
+                                @car.Year
+                                @if (car.Year == newestYear)
+                                {
+                                    <span class="badge bg-success ms-1">Mới nhất</span>
+                                }
+                            </span>
+                        </p>
+
+                        <p class="mb-1">
+                            <strong>Giá:</strong>
+                            <span class="@(car.Price == maxPrice ? "text-success fw-bold" : "text-danger")">
+                                @car.FormattedPrice
+                                @if (car.Price == maxPrice)
+                                {
+                                    <span class="badge bg-success ms-1">Cao nhất</span>
+                                }
+                            </span>
+                        </p>
+
+                        <p class="mb-1">
+                            <strong>Km đã đi:</strong>
+                            <span class="@(car.Mileage == minMileage ? "text-success fw-bold" : "")">
+                                @car.FormattedMileage
+                                @if (car.Mileage == minMileage)
+                                {
+                                    <span class="badge bg-success ms-1">Ít nhất</span>
+                                }
+                            </span>
+                        </p>
+
+                        <p class="mb-1"><strong>Nhiên liệu:</strong> @car.FuelType</p>
+                        <p class="mb-1"><strong>Hộp số:</strong> @car.Transmission</p>
+                        <p class="mb-1"><strong>Màu:</strong> @car.Color</p>
+                        <p class="mb-1"><strong>Vị trí:</strong> @car.Location</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,65 @@
+﻿@model WebOto_TranThienEm_12201094_LTW.Models.Order
+
+@{
+    var car = ViewBag.Car as WebOto_TranThienEm_12201094_LTW.Models.Car;
+    ViewData["Title"] = "Đặt mua xe: " + (car?.Name ?? "Không rõ xe");
+}
+
+<h2 class="text-center mb-4">Đặt mua xe: @car?.Name</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <img src="@car?.ImageUrl" class="card-img-top" alt="@car?.Name" style="object-fit: cover; max-height: 350px;">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">@car?.Name</h5>
+                    <p><strong>Hãng:</strong> @car?.Brand?.Name</p>
+                    <p><strong>Loại:</strong> @car?.Category?.Name</p>
+                    <p><strong>Giá:</strong> @car?.Price.ToString("N0") VNĐ</p>
+                    <p><strong>Mô tả:</strong> @car?.Description</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4 class="mb-3">Thông tin khách hàng</h4>
+            @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+            <form asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="CarId" value="@car?.Id" />
+
+                <div class="mb-3">
+                    <label asp-for="FullName" class="form-label"></label>
+                    @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", required = "required" })
+                    @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Phone" class="form-label"></label>
+                    @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", required = "required", pattern = "[0-9]{10,11}", title = "Số điện thoại hợp lệ từ 10-11 số" })
+                    @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email", required = "required" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Address" class="form-label"></label>
+                    @Html.TextAreaFor(m => m.Address, new { @class = "form-control", rows = 2, required = "required" })
+                    @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Note" class="form-label"></label>
+                    @Html.TextAreaFor(m => m.Note, new { @class = "form-control", rows = 2 })
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Xác nhận đặt hàng</button>
+            </form>
+        </div>
+    </div>
+</div>

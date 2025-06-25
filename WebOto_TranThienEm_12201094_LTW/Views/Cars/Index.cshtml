@@ -1,0 +1,132 @@
+﻿@model WebOto_TranThienEm_12201094_LTW.Models.ViewModels.SearchViewModel
+@using System.Linq
+
+<style>
+    .container-danh-sach {
+        margin-top: 40px;
+        padding: 20px;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .card {
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background-color: #fff;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+        }
+
+    .card-img-top {
+        height: 250px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    .hover-img:hover {
+        transform: scale(1.03);
+    }
+
+    .card-title {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+
+    .card-text {
+        font-family: 'Lato', sans-serif;
+        font-size: 1rem;
+        color: #34495e;
+        margin-bottom: 8px;
+    }
+
+    .formatted-price {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #e74c3c;
+    }
+
+    .btn-order {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 600;
+        padding: 14px 24px;
+        font-size: 1.1rem;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+        .btn-order:hover {
+            background-color: #27ae60;
+            transform: scale(1.02);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+
+    h3 {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 30px;
+        color: #2c3e50;
+    }
+
+    .alert-custom {
+        border-radius: 10px;
+        font-family: 'Lato', sans-serif;
+        font-size: 1.2rem;
+        padding: 20px;
+        margin-top: 20px;
+    }
+</style>
+
+<h3 class="text-center fw-bold text-primary mb-4">Sản phẩm (@Model.TotalCars xe)</h3>
+
+@if (Model.Cars == null || !Model.Cars.Any())
+{
+    <div class="alert alert-info text-center alert-custom" role="alert">
+        Không tìm thấy xe nào phù hợp với tiêu chí tìm kiếm của bạn.
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 container-danh-sach" id="carSearchResults">
+        @foreach (var car in Model.Cars)
+        {
+            <div class="col">
+                <div class="card h-100">
+                    @if (!string.IsNullOrEmpty(car.ImageUrl))
+                    {
+                        <img src="@car.ImageUrl" class="card-img-top hover-img" alt="@car.Name" />
+                    }
+                    else
+                    {
+                        <img src="/images/placeholder-car.png" class="card-img-top hover-img" alt="Không có hình ảnh" />
+                    }
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@car.Name</h5>
+                        <p class="card-text"><strong>Hãng:</strong> @car.BrandName</p>
+                        <p class="card-text"><strong>Loại:</strong> @car.CategoryName</p>
+                        <p class="card-text"><strong>Năm:</strong> @car.Year</p>
+                        <p class="card-text"><strong>Giá:</strong> <span class="formatted-price">@car.FormattedPrice</span></p>
+                        <div class="mt-auto d-grid">
+                            <a asp-controller="Order" asp-action="Create" asp-route-id="@car.Id" class="btn btn-order btn-success">
+                                <i class="bi bi-basket"></i> Đặt hàng
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

@@ -1,0 +1,104 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    ViewData["Title"] = "Liên hệ với E-Car";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12">
+            <h2 class="text-center display-4 fw-bold text-primary mb-5 section-title">Liên hệ với chúng tôi</h2>
+
+            <p class="lead text-center mb-5">
+                Chúng tôi luôn sẵn lòng lắng nghe và hỗ trợ bạn. Vui lòng liên hệ với chúng tôi qua các thông tin dưới đây hoặc điền vào biểu mẫu để được tư vấn nhanh chóng.
+            </p>
+
+            <div class="row mb-5">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body p-4">
+                            <h4 class="card-title fw-bold mb-4 text-dark"><i class="fas fa-info-circle me-3 text-primary"></i> Thông tin liên hệ</h4>
+                            <p class="fs-5 mb-3">
+                                <i class="fas fa-map-marker-alt me-3 text-secondary"></i>
+                                Địa chỉ: 123 Đường Thái Phiên, Phường 12, TP Đà Lạt, Lâm Đồng
+                            </p>
+                            <p class="fs-5 mb-3">
+                                <i class="fas fa-phone-alt me-3 text-secondary"></i>
+                                Hotline: <a href="tel:+84333983161" class="text-decoration-none text-dark fw-bold">84+ 333983161</a>
+                            </p>
+                            <p class="fs-5 mb-3">
+                                <i class="fas fa-envelope me-3 text-secondary"></i>
+                                Email: <a href="mailto:thienemtran2004@gmail.com" class="text-decoration-none text-dark fw-bold">thienemtran2004@gmail.com</a>
+                            </p>
+                            <p class="fs-5 mb-3">
+                                <i class="fas fa-clock me-3 text-secondary"></i>
+                                Giờ làm việc: Thứ 2 - Thứ 7 (8:00 - 18:00)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body p-4">
+                            <h4 class="card-title fw-bold mb-4 text-dark"><i class="fas fa-share-alt me-3 text-primary"></i> Theo dõi chúng tôi</h4>
+                            <p class="fs-5">Kết nối với chúng tôi qua các kênh mạng xã hội để cập nhật tin tức và ưu đãi mới nhất!</p>
+                            <div class="social-links mt-4">
+                                <a href="#" class="text-dark me-4 fs-2"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#" class="text-dark me-4 fs-2"><i class="fab fa-instagram"></i></a>
+                                <a href="#" class="text-dark me-4 fs-2"><i class="fab fa-youtube"></i></a>
+                                <a href="#" class="text-dark fs-2"><i class="fab fa-zalo"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-lg border-0 mb-5">
+                <div class="card-body p-5">
+                    <h4 class="card-title fw-bold text-center mb-4 text-dark">Gửi tin nhắn cho chúng tôi</h4>
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label fw-bold">Họ và tên <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-control-lg" id="name" placeholder="Nhập họ và tên của bạn" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label fw-bold">Email <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control form-control-lg" id="email" placeholder="Nhập email của bạn" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subject" class="form-label fw-bold">Tiêu đề</label>
+                            <input type="text" class="form-control form-control-lg" id="subject" placeholder="Tiêu đề tin nhắn">
+                        </div>
+                        <div class="mb-4">
+                            <label for="message" class="form-label fw-bold">Nội dung tin nhắn <span class="text-danger">*</span></label>
+                            <textarea class="form-control form-control-lg" id="message" rows="6" placeholder="Nhập nội dung tin nhắn của bạn" required></textarea>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg fw-bold py-3">Gửi tin nhắn</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-0">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3902.930064099507!2d108.4419999147775!3d11.94050009159939!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317112d8a4351a09%3A0x6b8a8b1b2b8b1b2b!2zMTIzIMSQxrDhu5dngyBUaMOhaSBQaGllbiwgUGjGsOG7nW5nIDEyLCBUaMOgbmggcGjhu5EgxJDDoCBM4bqhdCwgTMOibSBExuồng!5e0!3m2!1svi!2svn!4v1700000000000!5m2!1svi!2svn"
+                            width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+    </script>
+}
